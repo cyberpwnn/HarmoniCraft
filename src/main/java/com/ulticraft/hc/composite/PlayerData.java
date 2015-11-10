@@ -7,12 +7,14 @@ public class PlayerData implements Table
 {
 	private String uuid;
 	private String name;
+	private String packages;
 	private Integer notes;
 	
 	public PlayerData(Player player)
 	{
 		this.uuid = player.getUniqueId().toString();
 		this.name = player.getName();
+		this.packages = "";
 		this.notes = 0;
 	}
 	
@@ -36,6 +38,16 @@ public class PlayerData implements Table
 		this.name = name;
 	}
 	
+	public String getPackages()
+	{
+		return packages;
+	}
+
+	public void setPackages(String packages)
+	{
+		this.packages = packages;
+	}
+
 	public Integer getNotes()
 	{
 		return notes;
