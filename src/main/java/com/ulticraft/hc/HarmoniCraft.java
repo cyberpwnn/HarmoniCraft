@@ -1,12 +1,15 @@
 package com.ulticraft.hc;
 
 import java.util.Collection;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.ulticraft.hc.component.CommandComponent;
 import com.ulticraft.hc.component.DataComponent;
+import com.ulticraft.hc.component.MessageComponent;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.ComponentManager;
 import com.ulticraft.hc.uapi.Dispatcher;
@@ -16,6 +19,7 @@ public class HarmoniCraft extends JavaPlugin
 	private Dispatcher dispatcher;
 	private ComponentManager componentManager;
 	private CommandComponent commandComponent;
+	private MessageComponent messageComponent;
 	private DataComponent dataComponent;
 	
 	public void onEnable()
@@ -24,12 +28,20 @@ public class HarmoniCraft extends JavaPlugin
 		this.componentManager = new ComponentManager(this);
 		
 		this.commandComponent = new CommandComponent(this);
+		this.messageComponent = new MessageComponent(this);
 		this.dataComponent = new DataComponent(this);
 		
+		componentManager.register(messageComponent);
 		componentManager.register(commandComponent);
 		componentManager.register(dataComponent);
 		
 		componentManager.enable();
+	}
+	
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+	{
+		return commandComponent.process(sender, command.getName().toLowerCase(), args);
 	}
 	
 	public void onDisable()
@@ -65,6 +77,11 @@ public class HarmoniCraft extends JavaPlugin
 	public CommandComponent getCommandComponent()
 	{
 		return commandComponent;
+	}
+
+	public MessageComponent getMessageComponent()
+	{
+		return messageComponent;
 	}
 
 	public DataComponent getDataComponent()
