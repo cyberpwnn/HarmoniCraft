@@ -1,0 +1,7 @@
+name: HarmoniCraft
+main: com.ulticraft.hc.HarmoniCraft
+version: 1.0
+depend: [Vault]
+commands:
+  notes:
+    aliases: [note]
