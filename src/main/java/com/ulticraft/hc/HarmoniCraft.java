@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import com.ulticraft.hc.component.CommandComponent;
 import com.ulticraft.hc.component.DataComponent;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.ComponentManager;
@@ -14,6 +15,7 @@ public class HarmoniCraft extends JavaPlugin
 {
 	private Dispatcher dispatcher;
 	private ComponentManager componentManager;
+	private CommandComponent commandComponent;
 	private DataComponent dataComponent;
 	
 	public void onEnable()
@@ -21,8 +23,10 @@ public class HarmoniCraft extends JavaPlugin
 		this.dispatcher = new Dispatcher(this);
 		this.componentManager = new ComponentManager(this);
 		
+		this.commandComponent = new CommandComponent(this);
 		this.dataComponent = new DataComponent(this);
 		
+		componentManager.register(commandComponent);
 		componentManager.register(dataComponent);
 		
 		componentManager.enable();
@@ -58,6 +62,11 @@ public class HarmoniCraft extends JavaPlugin
 		return getServer().getOnlinePlayers();
 	}
 	
+	public CommandComponent getCommandComponent()
+	{
+		return commandComponent;
+	}
+
 	public DataComponent getDataComponent()
 	{
 		return dataComponent;
