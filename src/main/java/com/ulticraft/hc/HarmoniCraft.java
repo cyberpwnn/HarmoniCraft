@@ -5,11 +5,38 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.ulticraft.uapi.Dispatcher;
+import com.ulticraft.hc.component.DataComponent;
+import com.ulticraft.hc.composite.PlayerData;
+import com.ulticraft.hc.uapi.ComponentManager;
+import com.ulticraft.hc.uapi.Dispatcher;
 
 public class HarmoniCraft extends JavaPlugin
 {
 	private Dispatcher dispatcher;
+	private ComponentManager componentManager;
+	private DataComponent dataComponent;
+	
+	public void onEnable()
+	{
+		this.dispatcher = new Dispatcher(this);
+		this.componentManager = new ComponentManager(this);
+		
+		this.dataComponent = new DataComponent(this);
+		
+		componentManager.register(dataComponent);
+		
+		componentManager.enable();
+	}
+	
+	public void onDisable()
+	{
+		componentManager.disable();
+	}
+	
+	public PlayerData gpd(Player p)
+	{
+		return getDataComponent().get(p);
+	}
 	
 	public int scheduleSyncRepeatingTask(int delay, int interval, Runnable runnable)
 	{
@@ -31,6 +58,11 @@ public class HarmoniCraft extends JavaPlugin
 		return getServer().getOnlinePlayers();
 	}
 	
+	public DataComponent getDataComponent()
+	{
+		return dataComponent;
+	}
+
 	public void register(Listener listener)
 	{
 		getServer().getPluginManager().registerEvents(listener, this);
@@ -41,6 +73,11 @@ public class HarmoniCraft extends JavaPlugin
 		HandlerList.unregisterAll(listener);
 	}
 	
+	public ComponentManager getComponentManager()
+	{
+		return componentManager;
+	}
+
 	public Dispatcher getDispatcher()
 	{
 		return dispatcher;

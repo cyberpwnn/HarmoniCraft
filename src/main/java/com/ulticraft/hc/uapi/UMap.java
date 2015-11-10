@@ -1,4 +1,4 @@
-package com.ulticraft.uapi;
+package com.ulticraft.hc.uapi;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.ulticraft.uapi;
+package com.ulticraft.hc.uapi;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

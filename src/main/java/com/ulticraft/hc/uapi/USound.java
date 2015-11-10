@@ -1,4 +1,4 @@
-package com.ulticraft.uapi;
+package com.ulticraft.hc.uapi;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;

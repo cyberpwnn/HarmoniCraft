@@ -1,4 +1,4 @@
-package com.ulticraft.uapi;
+package com.ulticraft.hc.uapi;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,7 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import com.ulticraft.uapi.ReflectionUtils.PackageType;
+import com.ulticraft.hc.uapi.ReflectionUtils.PackageType;
 
 /**
  * <b>ParticleEffect Library</b>

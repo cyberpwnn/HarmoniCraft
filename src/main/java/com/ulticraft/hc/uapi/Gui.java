@@ -1,4 +1,4 @@
-package com.ulticraft.uapi;
+package com.ulticraft.hc.uapi;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,8 +22,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import com.ulticraft.uapi.Gui.Pane.Element;
-import com.ulticraft.uapi.Gui.Pane.Element.Trigger;
+import com.ulticraft.hc.uapi.Gui.Pane.Element;
+import com.ulticraft.hc.uapi.Gui.Pane.Element.Trigger;
 
 /**
  * The Gui Object is built within itself. All components are used internally,
