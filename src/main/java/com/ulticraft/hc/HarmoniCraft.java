@@ -1,7 +1,6 @@
 package com.ulticraft.hc;
 
 import java.util.Collection;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -10,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.ulticraft.hc.component.CommandComponent;
 import com.ulticraft.hc.component.DataComponent;
 import com.ulticraft.hc.component.MessageComponent;
+import com.ulticraft.hc.component.NoteComponent;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.ComponentManager;
 import com.ulticraft.hc.uapi.Dispatcher;
@@ -20,6 +20,7 @@ public class HarmoniCraft extends JavaPlugin
 	private ComponentManager componentManager;
 	private CommandComponent commandComponent;
 	private MessageComponent messageComponent;
+	private NoteComponent noteComponent;
 	private DataComponent dataComponent;
 	
 	public void onEnable()
@@ -28,25 +29,34 @@ public class HarmoniCraft extends JavaPlugin
 		this.componentManager = new ComponentManager(this);
 		
 		this.commandComponent = new CommandComponent(this);
+		this.noteComponent = new NoteComponent(this);
 		this.messageComponent = new MessageComponent(this);
 		this.dataComponent = new DataComponent(this);
 		
 		componentManager.register(messageComponent);
 		componentManager.register(commandComponent);
+		componentManager.register(noteComponent);
 		componentManager.register(dataComponent);
 		
 		componentManager.enable();
 	}
 	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-	{
-		return commandComponent.process(sender, command.getName().toLowerCase(), args);
-	}
-	
 	public void onDisable()
 	{
 		componentManager.disable();
+	}
+	
+	public void msg(CommandSender sender, String msg)
+	{
+		sender.sendMessage(msg);
+	}
+	
+	public void msg(CommandSender sender, String[] msgs)
+	{
+		for(String i : msgs)
+		{
+			msg(sender, i);
+		}
 	}
 	
 	public PlayerData gpd(Player p)
@@ -74,6 +84,32 @@ public class HarmoniCraft extends JavaPlugin
 		return getServer().getOnlinePlayers();
 	}
 	
+	public boolean canFindPlayer(String search)
+	{
+		return findPlayer(search) == null ? false : true;
+	}
+	
+	public Player findPlayer(String search)
+	{
+		for(Player i : onlinePlayers())
+		{
+			if(i.getName().equalsIgnoreCase(search))
+			{
+				return i;
+			}
+		}
+		
+		for(Player i : onlinePlayers())
+		{
+			if(i.getName().toLowerCase().contains(search.toLowerCase()))
+			{
+				return i;
+			}
+		}
+		
+		return null;
+	}
+	
 	public CommandComponent getCommandComponent()
 	{
 		return commandComponent;
@@ -82,6 +118,11 @@ public class HarmoniCraft extends JavaPlugin
 	public MessageComponent getMessageComponent()
 	{
 		return messageComponent;
+	}
+	
+	public NoteComponent getNoteComponent()
+	{
+		return noteComponent;
 	}
 
 	public DataComponent getDataComponent()
