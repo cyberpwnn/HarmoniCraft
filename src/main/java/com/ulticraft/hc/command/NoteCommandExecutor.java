@@ -26,7 +26,7 @@ public class NoteCommandExecutor implements CommandExecutor
 		{
 			if(isPlayer)
 			{
-				player.sendMessage(String.format(Info.MSG_GEMS_HAVE, String.valueOf(pl.gpd(player).getNotes())));
+				player.sendMessage(String.format(Info.MSG_NOTES_HAVE, String.valueOf(pl.gpd(player).getNotes())));
 			}
 			
 			else
@@ -83,7 +83,7 @@ public class NoteCommandExecutor implements CommandExecutor
 								else
 								{
 									pl.getNoteComponent().give(pl.findPlayer(args[1]), gems);
-									pl.msg(sender, String.format(Info.MSG_GEMS_GAVE, String.valueOf(gems), pl.findPlayer(args[1]).getName()));
+									pl.msg(sender, String.format(Info.MSG_NOTES_GAVE, String.valueOf(gems), pl.findPlayer(args[1]).getName()));
 								}
 							}
 							
@@ -130,12 +130,12 @@ public class NoteCommandExecutor implements CommandExecutor
 									if(pl.getNoteComponent().has(pl.findPlayer(args[1]), gems))
 									{
 										pl.getNoteComponent().take(pl.findPlayer(args[1]), gems);
-										pl.msg(sender, String.format(Info.MSG_GEMS_TOOK, String.valueOf(gems), pl.findPlayer(args[1]).getName()));
+										pl.msg(sender, String.format(Info.MSG_NOTES_TOOK, String.valueOf(gems), pl.findPlayer(args[1]).getName()));
 									}
 									
 									else
 									{
-										pl.msg(sender, String.format(Info.MSG_GEMS_NOT_ENOUGH, pl.findPlayer(args[1]).getName(), String.valueOf(pl.getNoteComponent().get(pl.findPlayer(args[1])))));
+										pl.msg(sender, String.format(Info.MSG_NOTES_NOT_ENOUGH, pl.findPlayer(args[1]).getName(), String.valueOf(pl.getNoteComponent().get(pl.findPlayer(args[1])))));
 									}
 								}
 							}

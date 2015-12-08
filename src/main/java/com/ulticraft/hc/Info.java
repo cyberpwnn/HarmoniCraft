@@ -42,17 +42,17 @@ public class Info
 	public static final String MSG_NOT_NEGATIVE = TAG_HARMONICRAFT + ChatColor.RED + "%s is clearly not negative.";
 	public static final String MSG_NOT_ZERO = TAG_HARMONICRAFT + ChatColor.RED + "%s is zero. Fix that.";
 	public static final String MSG_NOT_NUMBER = TAG_HARMONICRAFT + ChatColor.RED + "'%s' is not a number. It's Trash.";
-	public static final String MSG_PLAYER_GEM_HAS = TAG_HARMONICRAFT + ChatColor.LIGHT_PURPLE + "%s" + ChatColor.DARK_GRAY + " has " + ChatColor.LIGHT_PURPLE + "%s Gems";
+	public static final String MSG_PLAYER_GEM_HAS = TAG_HARMONICRAFT + ChatColor.LIGHT_PURPLE + "%s" + ChatColor.DARK_GRAY + " has " + ChatColor.LIGHT_PURPLE + "%s Notes";
 	public static final String MSG_PLAYER_ONLY = TAG_HARMONICRAFT + ChatColor.RED + "Player Only Command";
 	public static final String MSG_CONSOLE_ONLY = TAG_HARMONICRAFT + ChatColor.RED + "Console Only Command";
 	public static final String MSG_UNKNOWN_SUB_COMMAND = TAG_HARMONICRAFT + ChatColor.RED + "Unknown Sub Command '%s'";
-	public static final String MSG_GEMS_GAVE = TAG_NOTES + ChatColor.DARK_GRAY + "Gave " + ChatColor.LIGHT_PURPLE + "%s Gems" + ChatColor.DARK_GRAY + " to " + ChatColor.LIGHT_PURPLE + "%s";
-	public static final String MSG_GEMS_TOOK = TAG_NOTES + ChatColor.DARK_GRAY + "Took " + ChatColor.LIGHT_PURPLE + "%s Gems" + ChatColor.DARK_GRAY + " from " + ChatColor.LIGHT_PURPLE + "%s";
-	public static final String MSG_GEMS_NOT_ENOUGH = TAG_NOTES + ChatColor.DARK_GRAY + "Nope. " + ChatColor.LIGHT_PURPLE + "%s" + ChatColor.DARK_GRAY + " only has " + ChatColor.LIGHT_PURPLE + "%s Gems";
+	public static final String MSG_NOTES_GAVE = TAG_NOTES + ChatColor.DARK_GRAY + "Gave " + ChatColor.LIGHT_PURPLE + "%s Notes" + ChatColor.DARK_GRAY + " to " + ChatColor.LIGHT_PURPLE + "%s";
+	public static final String MSG_NOTES_TOOK = TAG_NOTES + ChatColor.DARK_GRAY + "Took " + ChatColor.LIGHT_PURPLE + "%s Notes" + ChatColor.DARK_GRAY + " from " + ChatColor.LIGHT_PURPLE + "%s";
+	public static final String MSG_NOTES_NOT_ENOUGH = TAG_NOTES + ChatColor.DARK_GRAY + "Nope. " + ChatColor.LIGHT_PURPLE + "%s" + ChatColor.DARK_GRAY + " only has " + ChatColor.LIGHT_PURPLE + "%s Notes";
 	
-	public static final String MSG_GEMS_HAVE = TAG_NOTES + ChatColor.DARK_GRAY + "You have " + ChatColor.LIGHT_PURPLE + "%s Gems";
-	public static final String MSG_GEMS_SPENT = ChatColor.DARK_GRAY + "Spent " + ChatColor.LIGHT_PURPLE + "%s Gems";
-	public static final String MSG_GEMS_EARNED = ChatColor.DARK_GRAY + "Earned " + ChatColor.LIGHT_PURPLE + "%s Gems";
+	public static final String MSG_NOTES_HAVE = TAG_NOTES + ChatColor.DARK_GRAY + "You have " + ChatColor.LIGHT_PURPLE + "%s Notes";
+	public static final String MSG_NOTES_SPENT = ChatColor.DARK_GRAY + "Spent " + ChatColor.LIGHT_PURPLE + "%s Notes";
+	public static final String MSG_NOTES_EARNED = ChatColor.DARK_GRAY + "Earned " + ChatColor.LIGHT_PURPLE + "%s Notes";
 	public static final String MSG_PERK_UNLOCK = ChatColor.DARK_GRAY + "Unlocked " + ChatColor.LIGHT_PURPLE + "%s";
 	public static final String MSG_ACHIEVEMENT = ChatColor.DARK_GRAY + "Achieved " + ChatColor.LIGHT_PURPLE + "%s %s";
 	public static final String MSG_UPGRADED = ChatColor.DARK_GRAY + "Updated Ulticraft " + ChatColor.LIGHT_PURPLE + "v" + VERSION;
