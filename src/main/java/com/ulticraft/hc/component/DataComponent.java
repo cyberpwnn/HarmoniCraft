@@ -27,6 +27,11 @@ public class DataComponent extends Component implements Listener
 	
 	public void enable()
 	{
+		if(!base.exists())
+		{
+			verify(base);
+		}
+		
 		pl.register(this);
 		
 		for(Player i : pl.onlinePlayers())
