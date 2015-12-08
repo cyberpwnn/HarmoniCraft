@@ -2,8 +2,10 @@ package com.ulticraft.hc.component;
 
 import org.bukkit.entity.Player;
 import com.ulticraft.hc.HarmoniCraft;
+import com.ulticraft.hc.Info;
 import com.ulticraft.hc.uapi.Component;
 import com.ulticraft.hc.uapi.Depend;
+import net.md_5.bungee.api.ChatColor;
 
 @Depend(DataComponent.class)
 public class NoteComponent extends Component
@@ -36,11 +38,13 @@ public class NoteComponent extends Component
 	public void give(Player p, int n)
 	{
 		set(p, get(p) + n);
+		p.sendMessage(Info.TAG_NOTES + ChatColor.WHITE + String.format(Info.MSG_NOTES_EARNED, String.valueOf(n)));
 	}
 	
 	public void take(Player p, int n)
 	{
 		set(p, get(p) - n);
+		p.sendMessage(Info.TAG_NOTES + ChatColor.WHITE + String.format(Info.MSG_NOTES_SPENT, String.valueOf(n)));
 	}
 	
 	public boolean has(Player p, int n)
