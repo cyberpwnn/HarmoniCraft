@@ -18,6 +18,11 @@ public class PlayerData implements Table
 		this.notes = 0;
 	}
 	
+	public PlayerData()
+	{
+		
+	}
+	
 	public String getUuid()
 	{
 		return uuid;
