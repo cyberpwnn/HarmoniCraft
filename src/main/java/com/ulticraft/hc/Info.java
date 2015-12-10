@@ -23,8 +23,8 @@ public class Info
 	public static final String TAG_NOTES = String.format(TAG, "Notes");
 	public static final String TAG_HARMONICRAFT = String.format(TAG, "HarmoniCraft");
 		
-	public static final String[] CMD_HELP_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current Notes"};
-	public static final String[] CMD_HELP_ADMIN_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current notes", Info.TAG_NOTES + ChatColor.YELLOW + "/notes get " + ChatColor.GOLD + "<player> " + ChatColor.WHITE + "- Get a player's notes", TAG_NOTES + ChatColor.YELLOW + "/notes give " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Give a player notes", TAG_NOTES + ChatColor.YELLOW + "/notes take " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Take player notes"};
+	public static final String[] CMD_HELP_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current Notes", TAG_NOTES + ChatColor.YELLOW + "/notes buy" + ChatColor.WHITE + "- Open the note gui menu"};
+	public static final String[] CMD_HELP_ADMIN_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current notes", Info.TAG_NOTES + ChatColor.YELLOW + "/notes get " + ChatColor.GOLD + "<player> " + ChatColor.WHITE + "- Get a player's notes", TAG_NOTES + ChatColor.YELLOW + "/notes give " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Give a player notes", TAG_NOTES + ChatColor.YELLOW + "/notes take " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Take player notes", TAG_NOTES + ChatColor.YELLOW + "/notes buy " + ChatColor.WHITE + "- Open the note gui menu"};
 	
 	public static final String MSG_NO_PERMISSION = TAG_HARMONICRAFT + ChatColor.RED + "Insufficient Permissions";
 	public static final String MSG_CANT_FIND_PLAYER = TAG_HARMONICRAFT + ChatColor.RED + "Cannot find player '%s'";
