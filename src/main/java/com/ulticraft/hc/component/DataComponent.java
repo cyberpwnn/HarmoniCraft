@@ -164,7 +164,7 @@ public class DataComponent extends Component implements Listener
 		return toFileName(player).exists();
 	}
 	
-	private void verify(File dir)
+	void verify(File dir)
 	{
 		if(!dir.getParentFile().exists())
 		{
