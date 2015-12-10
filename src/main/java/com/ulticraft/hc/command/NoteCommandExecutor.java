@@ -37,6 +37,18 @@ public class NoteCommandExecutor implements CommandExecutor
 		
 		else
 		{
+			if(args[0].equalsIgnoreCase("buy"))
+			{
+				pl.getUiComponent().openBuy(player);
+				return true;
+			}
+			
+			else if(!sender.hasPermission(Info.PERM_GOD))
+			{
+				pl.msg(sender, Info.CMD_HELP_NOTES);
+				return true;
+			}
+			
 			if(sender.hasPermission(Info.PERM_GOD))
 			{
 				if(args[0].equalsIgnoreCase("get"))
