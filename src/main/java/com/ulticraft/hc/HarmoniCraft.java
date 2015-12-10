@@ -11,6 +11,7 @@ import com.ulticraft.hc.component.DataComponent;
 import com.ulticraft.hc.component.MessageComponent;
 import com.ulticraft.hc.component.NoteComponent;
 import com.ulticraft.hc.component.PackageComponent;
+import com.ulticraft.hc.component.UIComponent;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.ComponentManager;
 import com.ulticraft.hc.uapi.Dispatcher;
@@ -24,6 +25,7 @@ public class HarmoniCraft extends JavaPlugin
 	private NoteComponent noteComponent;
 	private DataComponent dataComponent;
 	private PackageComponent packageComponent;
+	private UIComponent uiComponent;
 	
 	public void onEnable()
 	{
@@ -35,12 +37,14 @@ public class HarmoniCraft extends JavaPlugin
 		this.messageComponent = new MessageComponent(this);
 		this.dataComponent = new DataComponent(this);
 		this.packageComponent = new PackageComponent(this);
+		this.uiComponent = new UIComponent(this);
 		
 		componentManager.register(messageComponent);
 		componentManager.register(commandComponent);
 		componentManager.register(noteComponent);
 		componentManager.register(dataComponent);
 		componentManager.register(packageComponent);
+		componentManager.register(uiComponent);
 		
 		componentManager.enable();
 		
@@ -134,6 +138,11 @@ public class HarmoniCraft extends JavaPlugin
 	public DataComponent getDataComponent()
 	{
 		return dataComponent;
+	}
+
+	public UIComponent getUiComponent()
+	{
+		return uiComponent;
 	}
 
 	public void register(Listener listener)
