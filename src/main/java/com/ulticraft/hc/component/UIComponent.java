@@ -55,29 +55,39 @@ public class UIComponent extends Component
 		
 		for(final PackageData i : pl.getPackageComponent().get())
 		{
+			if(pl.getPackageComponent().has(p, i))
+			{
+				continue;
+			}
+			
 			Element element = pane.new Element(i.getName(), getMaterial(i), j);
+			element.resetDescription();
 			element.addBullet(i.getDescription());
 			element.addInfo("Costs " + i.getCost() + " Notes");
 			
 			if(pl.getNoteComponent().has(p, i.getCost()))
 			{
 				element.setRequirement("Affordable!");
-				element.setQuickRunnable(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						gui.close();
-						pane.breakElements();
-						pl.getPackageComponent().aquire(p, i);
-					}
-				});
 			}
 			
 			else
 			{
 				element.setFailedRequirement("Not Enough Notes!");
 			}
+			
+			element.setQuickRunnable(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if(pl.getNoteComponent().has(p, i.getCost()))
+					{
+						gui.close();
+						pane.breakElements();
+						pl.getPackageComponent().aquire(p, i);
+					}
+				}
+			});
 			
 			j++;
 		}
