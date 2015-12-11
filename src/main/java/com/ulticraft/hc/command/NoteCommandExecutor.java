@@ -1,5 +1,6 @@
 package com.ulticraft.hc.command;
 
+import java.io.File;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -51,6 +52,16 @@ public class NoteCommandExecutor implements CommandExecutor
 			
 			if(sender.hasPermission(Info.PERM_GOD))
 			{
+				if(args[0].equalsIgnoreCase("import"))
+				{
+					if(isPlayer)
+					{
+						return true;
+					}
+					
+					pl.getDataComponent().importLegacy(new File(pl.getDataFolder(), "legacy.yml"));
+				}
+				
 				if(args[0].equalsIgnoreCase("get"))
 				{
 					if(args.length == 2)

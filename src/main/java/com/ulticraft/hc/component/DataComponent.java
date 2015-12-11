@@ -2,27 +2,42 @@ package com.ulticraft.hc.component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import org.bukkit.Sound;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.util.Vector;
 import com.ulticraft.hc.HarmoniCraft;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.Component;
 import com.ulticraft.hc.uapi.DataManager;
+import com.ulticraft.hc.uapi.Title;
 import com.ulticraft.hc.uapi.UMap;
+import net.md_5.bungee.api.ChatColor;
 
 public class DataComponent extends Component implements Listener
 {
 	private File base;
 	private UMap<Player, PlayerData> cache;
+	private Integer[] task;
+	private String i;
+	private int c = 10;
 	
 	public DataComponent(HarmoniCraft pl)
 	{
 		super(pl);
 		this.base = new File(pl.getDataFolder(), "data");
 		this.cache = new UMap<Player, PlayerData>();
+		this.task = null;
+		this.i = null;
 	}
 	
 	public void enable()
@@ -52,6 +67,128 @@ public class DataComponent extends Component implements Listener
 		}
 		
 		super.disable();
+	}
+	
+	public void importLegacy(File file)
+	{
+		final FileConfiguration fc = new YamlConfiguration();
+		
+		try
+		{
+			fc.load(file);
+			
+			Set<String> keys = fc.getConfigurationSection("Notes.Players").getKeys(true);
+			final String name = "NAME UNKNOWN (this will fix when they join)";
+			
+			final String[] mk = keys.toArray(new String[keys.size()]);
+			
+			task = new Integer[2];
+			
+			task[1] = 0;
+			task[0] = pl.scheduleSyncRepeatingTask(0, 0, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if(task[1] >= mk.length)
+					{
+						pl.cancelTask(task[0]);
+						
+						for(final Player i : pl.onlinePlayers())
+						{
+							i.getWorld().strikeLightningEffect(i.getLocation());
+							i.playSound(i.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.4f);
+							i.playSound(i.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 1.6f);
+							i.playSound(i.getLocation(), Sound.WITHER_DEATH, 1.0f, 2.0f);
+							
+							pl.scheduleSyncTask(80, new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									Title t = new Title();
+									
+									t.setFadeInTime(20);
+									t.setFadeOutTime(80);
+									t.setStayTime(30);
+									t.setTitle(ChatColor.AQUA + "HarmoniCraft");
+									t.setSubtitle(ChatColor.YELLOW + "Developed by cyberpwn");
+									
+									t.send(i);
+									
+									i.playSound(i.getLocation(), Sound.WITHER_SPAWN, 1.0f, 1.0f);
+								}
+							});
+						}
+						
+						return;
+					}
+					
+					i = mk[task[1]];
+					task[1]++;
+					
+					UUID uuid = UUID.fromString(i);
+					Integer notes = fc.getInt("Notes.Players." + uuid.toString());
+					
+					PlayerData pd = new PlayerData();
+					pd.setName(name);
+					pd.setNotes(notes);
+					pd.setPackages("");
+					pd.setUuid(uuid.toString());
+					
+					DataManager dm = new DataManager(pl, toFileName(uuid));
+					dm.writeYAML(pd);
+					
+					int percent = (int) ((double)100 * (double)((double)task[1] / (double)mk.length));
+					Title t = new Title();
+					t.setFadeInTime(0);
+					t.setFadeOutTime(0);
+					t.setStayTime(40);
+					t.setTitle(ChatColor.LIGHT_PURPLE + "CYBERPWN " + ChatColor.DARK_GRAY + " IS A " + ChatColor.LIGHT_PURPLE + " GOD");
+					t.setSubtitle(ChatColor.DARK_GRAY + "Cyberpwn's Charge: " + ChatColor.LIGHT_PURPLE + percent + "%");
+					t.setSubSubTitle(ChatColor.LIGHT_PURPLE + "Setting up Ulticraft Source...");
+					
+					if(percent > 30)
+					{
+						t.setSubSubTitle(ChatColor.LIGHT_PURPLE + "Patching Player: " + task[1] + " :: + " + uuid);
+					}
+					
+					if(percent > 80)
+					{
+						t.setSubSubTitle(ChatColor.LIGHT_PURPLE + "Preparing Concurrent Player Injection...");
+					}
+					
+					
+					t.send();
+					
+					c--;
+					
+					if(c < 0)
+					{
+						Random r = new Random();
+
+						c = 100 - percent - r.nextInt(30);
+						
+						for(Player j : pl.onlinePlayers())
+						{
+							Vector v = new Vector(r.nextDouble(), r.nextDouble(), r.nextDouble());
+							
+							if(r.nextBoolean())
+							{
+								v.multiply(-1);
+							}
+							
+							j.getWorld().strikeLightningEffect(j.getLocation().add(v.multiply(9)));
+						}
+					}
+				}
+			});
+		}
+		
+		catch(IOException | InvalidConfigurationException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void create(Player player)
@@ -157,6 +294,11 @@ public class DataComponent extends Component implements Listener
 	public File toFileName(Player player)
 	{
 		return new File(base, player.getUniqueId().toString() + ".yml");
+	}
+	
+	public File toFileName(UUID uuid)
+	{
+		return new File(base, uuid.toString() + ".yml");
 	}
 	
 	public boolean exists(Player player)
