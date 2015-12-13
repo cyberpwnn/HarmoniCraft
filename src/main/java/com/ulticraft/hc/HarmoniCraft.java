@@ -1,6 +1,7 @@
 package com.ulticraft.hc;
 
 import java.util.Collection;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -15,6 +16,9 @@ import com.ulticraft.hc.component.UIComponent;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.ComponentManager;
 import com.ulticraft.hc.uapi.Dispatcher;
+import com.ulticraft.hc.uapi.Gui;
+import com.ulticraft.hc.uapi.Gui.Pane;
+import com.ulticraft.hc.uapi.Gui.Pane.Element;
 
 public class HarmoniCraft extends JavaPlugin
 {

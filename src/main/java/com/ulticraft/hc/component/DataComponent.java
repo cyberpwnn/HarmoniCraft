@@ -110,7 +110,7 @@ public class DataComponent extends Component implements Listener
 									
 									t.setFadeInTime(20);
 									t.setFadeOutTime(80);
-									t.setStayTime(30);
+									t.setStayTime(50);
 									t.setTitle(ChatColor.AQUA + "HarmoniCraft");
 									t.setSubtitle(ChatColor.YELLOW + "Developed by cyberpwn");
 									
