@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import org.bukkit.Sound;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,6 +20,7 @@ import com.ulticraft.hc.HarmoniCraft;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.Component;
 import com.ulticraft.hc.uapi.DataManager;
+import com.ulticraft.hc.uapi.FireworkEffectPlayer;
 import com.ulticraft.hc.uapi.Title;
 import com.ulticraft.hc.uapi.UMap;
 import net.md_5.bungee.api.ChatColor;
@@ -96,11 +98,6 @@ public class DataComponent extends Component implements Listener
 						
 						for(final Player i : pl.onlinePlayers())
 						{
-							i.getWorld().strikeLightningEffect(i.getLocation());
-							i.playSound(i.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.4f);
-							i.playSound(i.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 1.6f);
-							i.playSound(i.getLocation(), Sound.WITHER_DEATH, 1.0f, 2.0f);
-							
 							pl.scheduleSyncTask(80, new Runnable()
 							{
 								@Override
@@ -111,12 +108,10 @@ public class DataComponent extends Component implements Listener
 									t.setFadeInTime(20);
 									t.setFadeOutTime(80);
 									t.setStayTime(50);
-									t.setTitle(ChatColor.AQUA + "HarmoniCraft");
+									t.setTitle(ChatColor.AQUA + "HarmoniCraft Notes");
 									t.setSubtitle(ChatColor.YELLOW + "Developed by cyberpwn");
 									
 									t.send(i);
-									
-									i.playSound(i.getLocation(), Sound.WITHER_SPAWN, 1.0f, 1.0f);
 								}
 							});
 						}
@@ -144,18 +139,17 @@ public class DataComponent extends Component implements Listener
 					t.setFadeInTime(0);
 					t.setFadeOutTime(0);
 					t.setStayTime(40);
-					t.setTitle(ChatColor.LIGHT_PURPLE + "CYBERPWN " + ChatColor.DARK_GRAY + " IS A " + ChatColor.LIGHT_PURPLE + " GOD");
-					t.setSubtitle(ChatColor.DARK_GRAY + "Cyberpwn's Charge: " + ChatColor.LIGHT_PURPLE + percent + "%");
-					t.setSubSubTitle(ChatColor.LIGHT_PURPLE + "Setting up Ulticraft Source...");
+					t.setSubtitle(ChatColor.DARK_GRAY + "Progress: " + ChatColor.AQUA + percent + "%");
+					t.setSubSubTitle(ChatColor.AQUA + "Setting up Source...");
 					
 					if(percent > 30)
 					{
-						t.setSubSubTitle(ChatColor.LIGHT_PURPLE + "Patching Player: " + task[1] + " :: + " + uuid);
+						t.setSubSubTitle(ChatColor.AQUA + "Patching Player: " + task[1] + " :: + " + uuid);
 					}
 					
 					if(percent > 80)
 					{
-						t.setSubSubTitle(ChatColor.LIGHT_PURPLE + "Preparing Concurrent Player Injection...");
+						t.setSubSubTitle(ChatColor.AQUA + "Preparing Concurrent Player Injection...");
 					}
 					
 					
@@ -177,8 +171,16 @@ public class DataComponent extends Component implements Listener
 							{
 								v.multiply(-1);
 							}
+														
+							try
+							{
+								new FireworkEffectPlayer().playFirework(j.getWorld(), j.getLocation().add(v.multiply(9)), FireworkEffect.builder().withColor(Color.YELLOW, Color.AQUA).trail(true).flicker(true).build());
+							}
 							
-							j.getWorld().strikeLightningEffect(j.getLocation().add(v.multiply(9)));
+							catch(Exception e)
+							{
+								e.printStackTrace();
+							}
 						}
 					}
 				}
