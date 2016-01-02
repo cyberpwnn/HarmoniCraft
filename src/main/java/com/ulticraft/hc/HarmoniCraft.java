@@ -1,7 +1,7 @@
 package com.ulticraft.hc;
 
 import java.util.Collection;
-import org.bukkit.Material;
+import org.bukkit.block.Jukebox;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.ulticraft.hc.component.CommandComponent;
 import com.ulticraft.hc.component.DataComponent;
+import com.ulticraft.hc.component.JumpComponent;
 import com.ulticraft.hc.component.MessageComponent;
 import com.ulticraft.hc.component.NoteComponent;
 import com.ulticraft.hc.component.PackageComponent;
@@ -16,9 +17,6 @@ import com.ulticraft.hc.component.UIComponent;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.ComponentManager;
 import com.ulticraft.hc.uapi.Dispatcher;
-import com.ulticraft.hc.uapi.Gui;
-import com.ulticraft.hc.uapi.Gui.Pane;
-import com.ulticraft.hc.uapi.Gui.Pane.Element;
 
 public class HarmoniCraft extends JavaPlugin
 {
@@ -30,6 +28,7 @@ public class HarmoniCraft extends JavaPlugin
 	private DataComponent dataComponent;
 	private PackageComponent packageComponent;
 	private UIComponent uiComponent;
+	private JumpComponent jumpComponent;
 	
 	public void onEnable()
 	{
@@ -41,6 +40,7 @@ public class HarmoniCraft extends JavaPlugin
 		this.messageComponent = new MessageComponent(this);
 		this.dataComponent = new DataComponent(this);
 		this.packageComponent = new PackageComponent(this);
+		this.jumpComponent = new JumpComponent(this);
 		this.uiComponent = new UIComponent(this);
 		
 		componentManager.register(messageComponent);
@@ -49,6 +49,7 @@ public class HarmoniCraft extends JavaPlugin
 		componentManager.register(dataComponent);
 		componentManager.register(packageComponent);
 		componentManager.register(uiComponent);
+		componentManager.register(jumpComponent);
 		
 		componentManager.enable();
 		
@@ -127,6 +128,11 @@ public class HarmoniCraft extends JavaPlugin
 	public CommandComponent getCommandComponent()
 	{
 		return commandComponent;
+	}
+
+	public JumpComponent getJumpComponent()
+	{
+		return jumpComponent;
 	}
 
 	public MessageComponent getMessageComponent()

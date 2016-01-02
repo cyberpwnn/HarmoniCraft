@@ -52,6 +52,14 @@ public class NoteCommandExecutor implements CommandExecutor
 			
 			if(sender.hasPermission(Info.PERM_GOD))
 			{
+				if(args[0].equalsIgnoreCase("jump"))
+				{
+					if(player.isOp())
+					{
+						pl.getJumpComponent().getPlayers().add(player);
+					}
+				}
+				
 				if(args[0].equalsIgnoreCase("import"))
 				{
 					if(isPlayer)
