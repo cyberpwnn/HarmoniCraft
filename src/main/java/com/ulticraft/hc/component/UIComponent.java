@@ -1,5 +1,6 @@
 package com.ulticraft.hc.component;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import com.ulticraft.hc.HarmoniCraft;
@@ -9,6 +10,7 @@ import com.ulticraft.hc.uapi.Depend;
 import com.ulticraft.hc.uapi.Gui;
 import com.ulticraft.hc.uapi.Gui.Pane;
 import com.ulticraft.hc.uapi.Gui.Pane.Element;
+import net.md_5.bungee.api.ChatColor;
 
 @Depend(PackageComponent.class)
 public class UIComponent extends Component
@@ -60,19 +62,19 @@ public class UIComponent extends Component
 				continue;
 			}
 			
-			Element element = pane.new Element(i.getName(), getMaterial(i), j);
+			Element element = pane.new Element(ChatColor.YELLOW + i.getName(), getMaterial(i), j);
 			element.resetDescription();
-			element.addBullet(i.getDescription());
-			element.addInfo("Costs " + i.getCost() + " Notes");
+			element.addInfo(ChatColor.GOLD + "Costs " + i.getCost() + " Notes");
+			element.addInfo(WordUtils.wrap(i.getDescription(), 32));
 			
 			if(pl.getNoteComponent().has(p, i.getCost()))
 			{
-				element.setRequirement("Affordable!");
+				element.addRequirement("Affordable!");
 			}
 			
 			else
 			{
-				element.setFailedRequirement("Not Enough Notes!");
+				element.addFailedRequirement("Not Enough Notes!");
 			}
 			
 			element.setQuickRunnable(new Runnable()
@@ -88,6 +90,31 @@ public class UIComponent extends Component
 					}
 				}
 			});
+			
+			j++;
+		}
+		
+		pane.setDefault();
+		gui.show();
+	}
+	
+	public void openOwned(final Player p)
+	{
+		final Gui gui = new Gui(p, pl);
+		final Pane pane = gui.new Pane("Owned Packages");
+		
+		int j = 0;
+		
+		for(final PackageData i : pl.getPackageComponent().get())
+		{
+			if(!pl.getPackageComponent().has(p, i))
+			{
+				continue;
+			}
+			
+			Element element = pane.new Element(ChatColor.YELLOW + i.getName(), getMaterial(i), j);
+			element.resetDescription();
+			element.addInfo(WordUtils.wrap(i.getDescription(), 32));
 			
 			j++;
 		}
