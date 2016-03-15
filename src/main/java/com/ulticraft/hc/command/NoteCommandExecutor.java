@@ -44,6 +44,12 @@ public class NoteCommandExecutor implements CommandExecutor
 				return true;
 			}
 			
+			if(args[0].equalsIgnoreCase("owned"))
+			{
+				pl.getUiComponent().openOwned(player);
+				return true;
+			}
+			
 			else if(!sender.hasPermission(Info.PERM_GOD))
 			{
 				pl.msg(sender, Info.CMD_HELP_NOTES);
@@ -52,15 +58,17 @@ public class NoteCommandExecutor implements CommandExecutor
 			
 			if(sender.hasPermission(Info.PERM_GOD))
 			{
-				if(args[0].equalsIgnoreCase("jump"))
+				if(args[0].equalsIgnoreCase("import"))
 				{
-					if(player.isOp())
+					if(isPlayer)
 					{
-						pl.getJumpComponent().getPlayers().add(player);
+						return true;
 					}
+					
+					pl.getDataComponent().importLegacy(new File(pl.getDataFolder(), "legacy.yml"));
 				}
 				
-				if(args[0].equalsIgnoreCase("import"))
+				if(args[0].equalsIgnoreCase("reload"))
 				{
 					if(isPlayer)
 					{
