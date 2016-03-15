@@ -45,7 +45,6 @@ public class Info
 	public static final String MSG_NOTES_EARNED = ChatColor.WHITE + "Earned " + ChatColor.YELLOW + "%s Notes";
 	public static final String MSG_PERK_UNLOCK = ChatColor.WHITE + "Unlocked " + ChatColor.YELLOW + "%s";
 	public static final String MSG_ACHIEVEMENT = ChatColor.WHITE + "Achieved " + ChatColor.YELLOW + "%s %s";
-	public static final String MSG_UPGRADED = ChatColor.WHITE + "Updated Ulticraft " + ChatColor.YELLOW + "v" + VERSION;
 	public static final String MSG_DEVELOPED_BY = ChatColor.YELLOW + "Developed by";
 	
 	public static final String BROAD_ACHIEVEMENT = ChatColor.YELLOW + "%s " + ChatColor.WHITE + "Achieved " + ChatColor.YELLOW + "%s %s";
