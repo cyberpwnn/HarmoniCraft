@@ -2,11 +2,8 @@ package com.ulticraft.hc.component;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,12 +12,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.util.Vector;
 import com.ulticraft.hc.HarmoniCraft;
 import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.Component;
 import com.ulticraft.hc.uapi.DataManager;
-import com.ulticraft.hc.uapi.FireworkEffectPlayer;
 import com.ulticraft.hc.uapi.Title;
 import com.ulticraft.hc.uapi.UMap;
 import net.md_5.bungee.api.ChatColor;
@@ -31,7 +26,6 @@ public class DataComponent extends Component implements Listener
 	private UMap<Player, PlayerData> cache;
 	private Integer[] task;
 	private String i;
-	private int c = 10;
 	
 	public DataComponent(HarmoniCraft pl)
 	{
@@ -92,96 +86,69 @@ public class DataComponent extends Component implements Listener
 				@Override
 				public void run()
 				{
-					if(task[1] >= mk.length)
+					for(int ixx = 0; ixx < 4; ixx++)
 					{
-						pl.cancelTask(task[0]);
-						
-						for(final Player i : pl.onlinePlayers())
+						if(task[1] >= mk.length)
 						{
-							pl.scheduleSyncTask(80, new Runnable()
+							pl.cancelTask(task[0]);
+							
+							for(final Player i : pl.onlinePlayers())
 							{
-								@Override
-								public void run()
+								pl.scheduleSyncTask(80, new Runnable()
 								{
-									Title t = new Title();
-									
-									t.setFadeInTime(20);
-									t.setFadeOutTime(80);
-									t.setStayTime(50);
-									t.setTitle(ChatColor.AQUA + "HarmoniCraft Notes");
-									t.setSubtitle(ChatColor.YELLOW + "Developed by cyberpwn");
-									
-									t.send(i);
-								}
-							});
+									@Override
+									public void run()
+									{
+										Title t = new Title();
+										
+										t.setFadeInTime(20);
+										t.setFadeOutTime(80);
+										t.setStayTime(50);
+										t.setTitle(ChatColor.AQUA + "HarmoniCraft Notes");
+										t.setSubtitle(ChatColor.YELLOW + "Developed by cyberpwn");
+										
+										t.send(i);
+									}
+								});
+							}
+							
+							return;
 						}
 						
-						return;
-					}
-					
-					i = mk[task[1]];
-					task[1]++;
-					
-					UUID uuid = UUID.fromString(i);
-					Integer notes = fc.getInt("Notes.Players." + uuid.toString());
-					
-					PlayerData pd = new PlayerData();
-					pd.setName(name);
-					pd.setNotes(notes);
-					pd.setPackages("");
-					pd.setUuid(uuid.toString());
-					
-					DataManager dm = new DataManager(pl, toFileName(uuid));
-					dm.writeYAML(pd);
-					
-					int percent = (int) ((double)100 * (double)((double)task[1] / (double)mk.length));
-					Title t = new Title();
-					t.setFadeInTime(0);
-					t.setFadeOutTime(0);
-					t.setStayTime(40);
-					t.setSubtitle(ChatColor.DARK_GRAY + "Progress: " + ChatColor.AQUA + percent + "%");
-					t.setSubSubTitle(ChatColor.AQUA + "Setting up Source...");
-					
-					if(percent > 30)
-					{
-						t.setSubSubTitle(ChatColor.AQUA + "Patching Player: " + task[1] + " :: + " + uuid);
-					}
-					
-					if(percent > 80)
-					{
-						t.setSubSubTitle(ChatColor.AQUA + "Preparing Concurrent Player Injection...");
-					}
-					
-					
-					t.send();
-					
-					c--;
-					
-					if(c < 0)
-					{
-						Random r = new Random();
-
-						c = 100 - percent - r.nextInt(30);
+						i = mk[task[1]];
+						task[1]++;
 						
-						for(Player j : pl.onlinePlayers())
+						UUID uuid = UUID.fromString(i);
+						Integer notes = fc.getInt("Notes.Players." + uuid.toString());
+						
+						PlayerData pd = new PlayerData();
+						pd.setName(name);
+						pd.setNotes(notes);
+						pd.setPackages("");
+						pd.setUuid(uuid.toString());
+						
+						DataManager dm = new DataManager(pl, toFileName(uuid));
+						dm.writeYAML(pd);
+						
+						int percent = (int) ((double) 100 * (double) ((double) task[1] / (double) mk.length));
+						Title t = new Title();
+						t.setFadeInTime(0);
+						t.setFadeOutTime(0);
+						t.setStayTime(40);
+						t.setSubtitle(ChatColor.DARK_GRAY + "Progress: " + ChatColor.AQUA + percent + "%");
+						t.setSubSubTitle(ChatColor.AQUA + "Setting up Source...");
+						
+						if(percent > 30)
 						{
-							Vector v = new Vector(r.nextDouble(), r.nextDouble(), r.nextDouble());
-							
-							if(r.nextBoolean())
-							{
-								v.multiply(-1);
-							}
-														
-							try
-							{
-								new FireworkEffectPlayer().playFirework(j.getWorld(), j.getLocation().add(v.multiply(9)), FireworkEffect.builder().withColor(Color.YELLOW, Color.AQUA).trail(true).flicker(true).build());
-							}
-							
-							catch(Exception e)
-							{
-								e.printStackTrace();
-							}
+							t.setSubSubTitle(ChatColor.AQUA + "Patching Player: " + task[1] + " :: + " + uuid);
 						}
+						
+						if(percent > 97)
+						{
+							t.setSubSubTitle(ChatColor.AQUA + "Preparing Concurrent Player Injection...");
+						}
+						
+						t.send();
 					}
 				}
 			});
