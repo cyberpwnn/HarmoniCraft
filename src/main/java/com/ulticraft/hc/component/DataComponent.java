@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
+import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -101,11 +102,12 @@ public class DataComponent extends Component implements Listener
 									{
 										Title t = new Title();
 										
-										t.setFadeInTime(20);
+										t.setFadeInTime(5);
 										t.setFadeOutTime(80);
-										t.setStayTime(50);
+										t.setStayTime(80);
 										t.setTitle(ChatColor.AQUA + "HarmoniCraft Notes");
 										t.setSubtitle(ChatColor.YELLOW + "Developed by cyberpwn");
+										i.getWorld().playSound(i.getLocation(), Sound.WITHER_SPAWN, 1f, 1f);
 										
 										t.send(i);
 									}
