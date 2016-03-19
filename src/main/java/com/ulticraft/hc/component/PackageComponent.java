@@ -1,16 +1,20 @@
 package com.ulticraft.hc.component;
 
 import java.io.File;
+import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import com.ulticraft.hc.HarmoniCraft;
 import com.ulticraft.hc.Info;
 import com.ulticraft.hc.composite.PackageData;
+import com.ulticraft.hc.composite.PlayerData;
 import com.ulticraft.hc.uapi.Component;
-import com.ulticraft.hc.uapi.DataManager;
 import com.ulticraft.hc.uapi.Depend;
 import com.ulticraft.hc.uapi.UList;
 import com.ulticraft.hc.uapi.UMap;
@@ -57,9 +61,24 @@ public class PackageComponent extends Component
 		}
 		
 		File demof = new File(demo, "demo-package.yml");
-		PackageData pDemo = new PackageData("Package Name", "Package Description", 20, "perm.something,perm.granted,permission.some.perm", "/give $$ diamond 1,/give $$ emerald 1,", Material.SAPLING.toString());
-		DataManager dm = new DataManager(pl, demof);
-		dm.writeYAML(pDemo);
+		PackageData pDemo = new PackageData();
+		pDemo.setCost(20);
+		pDemo.setMaterial(Material.ACACIA_DOOR.toString());
+		pDemo.setDescription("Description of Package");
+		pDemo.setName("Name of package");
+		pDemo.setInitial(new UList<String>().qadd("/give $$ diamond 1").qadd("/another command"));
+		pDemo.setGrant(new UList<String>().qadd("granted.permission").qadd("another.new.permission"));
+		pDemo.setDependencies(new UList<String>().qadd("Package Name").qadd("Another Package"));
+		
+		try
+		{
+			pDemo.toYaml().save(demof);
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean setupPermissions()
@@ -82,21 +101,21 @@ public class PackageComponent extends Component
 		{
 			if(i.isFile() && i.getName().toLowerCase().endsWith(".yml"))
 			{
-				DataManager dm = new DataManager(pl, i);
+				pl.s("Reading Package Data for " + i.getName());
+				FileConfiguration fc = new YamlConfiguration();
 				
 				try
 				{
-					PackageData pd = (PackageData) dm.readYAML(PackageData.class);
-					
-					packages.put(StringUtils.remove(i.getName(), ".yml").toLowerCase(), pd);
-					
-					pl.o("Loded Package: " + pd.getName() + " [" + pd.getCost() + " Notes]");
+					fc.load(i);
+					PackageData pd = new PackageData(fc);
+					pl.s("  Loaded Package: " + pd.toString());
+					packages.put(pd.getName(), pd);
 					l++;
 				}
 				
-				catch(Exception e)
+				catch(IOException | InvalidConfigurationException e)
 				{
-					pl.f("FAILED TO LOAD DATA FOR PACKAGE FILE: " + i.getName() + "At: " + i.getPath());
+					e.printStackTrace();
 				}
 			}
 		}
@@ -183,11 +202,25 @@ public class PackageComponent extends Component
 			return;
 		}
 		
-		pl.gpd(p).setPackages(new UList<String>(pl.gpd(p).getPackages()).qadd(getCodeName(pd)).toString(","));
+		for(String k : pd.getDependencies())
+		{
+			if(pl.getPackageComponent().get(k) != null)
+			{
+				if(!pl.getPackageComponent().has(p, k))
+				{
+					return;
+				}
+			}
+		}
+		
+		PlayerData pld = pl.gpd(p);
+		pld.setPackages(new UList<String>(pl.gpd(p).getPackages()).qadd(getCodeName(pd)).toString(","));
+		pl.spd(p, pld);
+		
 		pl.getNoteComponent().take(p, pd.getCost());
 		p.sendMessage(Info.TAG_NOTES + "Unlocked " + pd.getName());
 		
-		for(String i : pd.getInitial().split(","))
+		for(String i : pd.getInitial())
 		{
 			String m = StringUtils.replace(i, "$$", p.getName());
 			
@@ -200,7 +233,7 @@ public class PackageComponent extends Component
 			Bukkit.dispatchCommand(pl.getServer().getConsoleSender(), m);
 		}
 		
-		for(String i : pd.getGrant().split(","))
+		for(String i : pd.getGrant())
 		{
 			pl.s("Granting Permission [" + p.getName() + "]: " + ChatColor.GOLD + i);
 			
