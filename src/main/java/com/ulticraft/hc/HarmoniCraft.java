@@ -74,6 +74,11 @@ public class HarmoniCraft extends JavaPlugin
 		return getDataComponent().get(p);
 	}
 	
+	public void spd(Player p, PlayerData pd)
+	{
+		getDataComponent().put(p, pd);
+	}
+	
 	public int scheduleSyncRepeatingTask(int delay, int interval, Runnable runnable)
 	{
 		return getServer().getScheduler().scheduleSyncRepeatingTask(this, runnable, delay, interval);
