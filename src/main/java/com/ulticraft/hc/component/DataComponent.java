@@ -39,6 +39,10 @@ public class DataComponent extends Component implements Listener
 	private String i;
 	private int tsk;
 	private int tks;
+	private boolean importing;
+	private String pc;
+	private int pcx;
+	private int pcc;
 	
 	public DataComponent(HarmoniCraft pl)
 	{
@@ -47,6 +51,7 @@ public class DataComponent extends Component implements Listener
 		this.cache = new UMap<Player, PlayerData>();
 		this.task = null;
 		this.i = null;
+		this.importing = false;
 	}
 	
 	public void enable()
@@ -86,6 +91,9 @@ public class DataComponent extends Component implements Listener
 		{
 			fc.load(file);
 			
+			pcx = 0;
+			pcc = 0;
+			importing = true;
 			Set<String> keys = fc.getConfigurationSection("Notes.Players").getKeys(true);
 			final String name = "NAME UNKNOWN (this will fix when they join)";
 			
@@ -113,7 +121,7 @@ public class DataComponent extends Component implements Listener
 						if(task[1] >= mk.length)
 						{
 							pl.cancelTask(task[0]);
-							
+							importing = false;
 							for(final Player i : pl.onlinePlayers())
 							{
 								pl.scheduleSyncTask(80, new Runnable()
@@ -150,13 +158,13 @@ public class DataComponent extends Component implements Listener
 													}
 												}
 												
-												if(tks > 150)
+												if(tks > 120)
 												{
 													for(Player i : pl.onlinePlayers())
 													{
 														Area a = new Area(i.getLocation().add(0, 20, 0), 30.0);
 														
-														for(int ix = 0; ix < 4; ix++)
+														for(int ix = 0; ix < 1; ix++)
 														{
 															fireworks(a.random());
 														}
@@ -213,7 +221,59 @@ public class DataComponent extends Component implements Listener
 						t.setSubtitle(ChatColor.DARK_GRAY + "Progress: " + ChatColor.AQUA + percent + "%");
 						t.setSubSubTitle(ChatColor.AQUA + "Setting up Source...");
 						
-						if(percent > 9)
+						pc = percent + "%";
+						pcc = percent;
+						
+						if(pcc >= 85)
+						{
+							t.setTitle(ChatColor.GOLD + "Firework Show at HUB: " + (100 - pcc));
+						}
+						
+						if(pcc != pcx)
+						{
+							pcx = pcc;
+							pl.o("Importing PlayerData: " + percent + "%");
+							
+							if(pcc >= 90)
+							{
+								for(Player ci : pl.onlinePlayers())
+								{
+									ci.playSound(ci.getLocation(), Sound.FIREWORK_BLAST, 1f, 0.1f);
+								}
+							}
+						}
+						
+						if(percent > 5)
+						{
+							t.setSubSubTitle(ChatColor.AQUA + "Harmonicraft Notes by Cyberpwn");
+						}
+						
+						if(percent > 10)
+						{
+							t.setSubSubTitle(ChatColor.AQUA + "Your notes are being transfered.");
+						}
+						
+						if(percent > 15)
+						{
+							t.setSubSubTitle(ChatColor.AQUA + "Check all the commands with /note ?");
+						}
+						
+						if(percent > 20)
+						{
+							t.setSubSubTitle(ChatColor.AQUA + "Full GUI Support");
+						}
+						
+						if(percent > 25)
+						{
+							t.setSubSubTitle(ChatColor.AQUA + "Performence Driven");
+						}
+						
+						if(percent > 30)
+						{
+							t.setSubSubTitle(ChatColor.AQUA + "Open Source (github.com/cyberpwnn)");
+						}
+						
+						if(percent > 61)
 						{
 							t.setSubSubTitle(ChatColor.AQUA + "Patching Player: " + task[1] + " :: + " + uuid);
 						}
@@ -322,6 +382,20 @@ public class DataComponent extends Component implements Listener
 	
 	public void join(Player player)
 	{
+		if(importing)
+		{
+			pl.scheduleSyncTask(0, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					player.kickPlayer(ChatColor.GOLD + "Harmonicraft is Updating (" + pc + ")");
+				}
+			});
+			
+			return;
+		}
+		
 		if(!exists(player))
 		{
 			create(player);
@@ -335,6 +409,11 @@ public class DataComponent extends Component implements Listener
 	
 	public void quit(Player player)
 	{
+		if(importing)
+		{
+			return;
+		}
+		
 		if(!save(player))
 		{
 			pl.f("FAILED TO SAVE PLAYER! " + player.getUniqueId().toString());
