@@ -23,8 +23,8 @@ public class Info
 	public static final String TAG_NOTES = String.format(TAG, "Notes");
 	public static final String TAG_HARMONICRAFT = String.format(TAG, "HarmoniCraft");
 		
-	public static final String[] CMD_HELP_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current Notes", TAG_NOTES + ChatColor.YELLOW + "/notes buy" + ChatColor.WHITE + "- Open the note gui menu"};
-	public static final String[] CMD_HELP_ADMIN_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current notes", Info.TAG_NOTES + ChatColor.YELLOW + "/notes get " + ChatColor.GOLD + "<player> " + ChatColor.WHITE + "- Get a player's notes", TAG_NOTES + ChatColor.YELLOW + "/notes give " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Give a player notes", TAG_NOTES + ChatColor.YELLOW + "/notes take " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Take player notes", TAG_NOTES + ChatColor.YELLOW + "/notes buy " + ChatColor.WHITE + "- Open the note gui menu", TAG_NOTES + ChatColor.RED + "/notes import " + ChatColor.WHITE + "- Import old data. OVERWRITES CURRENT DATA!"};
+	public static final String[] CMD_HELP_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current Notes", TAG_NOTES + ChatColor.YELLOW + "/notes buy" + ChatColor.WHITE + "- Open the note gui menu", TAG_NOTES + ChatColor.YELLOW + "/notes owned" + ChatColor.WHITE + "- Show packages owned", TAG_NOTES + ChatColor.YELLOW + "/notes pay <plr> <ammount>" + ChatColor.WHITE + "- Pay another player notes."};
+	public static final String[] CMD_HELP_ADMIN_NOTES = new String[]{TAG_NOTES + ChatColor.YELLOW + "/notes " + ChatColor.WHITE + "- Get current notes", Info.TAG_NOTES + ChatColor.YELLOW + "/notes get " + ChatColor.GOLD + "<player> " + ChatColor.WHITE + "- Get a player's notes", TAG_NOTES + ChatColor.YELLOW + "/notes give " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Give a player notes", TAG_NOTES + ChatColor.YELLOW + "/notes take " + ChatColor.GOLD + "[player] [notes] " + ChatColor.WHITE + "- Take player notes", TAG_NOTES + ChatColor.YELLOW + "/notes buy " + ChatColor.WHITE + "- Open the note gui menu", TAG_NOTES + ChatColor.YELLOW + "/notes owned" + ChatColor.WHITE + "- Show packages owned", TAG_NOTES + ChatColor.YELLOW + "/notes pay <plr> <ammount>" + ChatColor.WHITE + "- Pay another player notes.", TAG_NOTES + ChatColor.RED + "/notes import " + ChatColor.WHITE + "- Import old data. OVERWRITES CURRENT DATA!"};
 	
 	public static final String MSG_NO_PERMISSION = TAG_HARMONICRAFT + ChatColor.RED + "Insufficient Permissions";
 	public static final String MSG_CANT_FIND_PLAYER = TAG_HARMONICRAFT + ChatColor.RED + "Cannot find player '%s'";
@@ -36,6 +36,8 @@ public class Info
 	public static final String MSG_PLAYER_ONLY = TAG_HARMONICRAFT + ChatColor.RED + "Player Only Command";
 	public static final String MSG_CONSOLE_ONLY = TAG_HARMONICRAFT + ChatColor.RED + "Console Only Command";
 	public static final String MSG_UNKNOWN_SUB_COMMAND = TAG_HARMONICRAFT + ChatColor.RED + "Unknown Sub Command '%s'";
+	public static final String MSG_NOTES_PAID = TAG_NOTES + ChatColor.WHITE + "Paid " + ChatColor.YELLOW + "%s Notes" + ChatColor.WHITE + " to " + ChatColor.YELLOW + "%s";
+	public static final String MSG_NOTES_PAID_FROM = TAG_NOTES + ChatColor.WHITE + "%s Paid you " + ChatColor.YELLOW + "%s Notes";
 	public static final String MSG_NOTES_GAVE = TAG_NOTES + ChatColor.WHITE + "Gave " + ChatColor.YELLOW + "%s Notes" + ChatColor.WHITE + " to " + ChatColor.YELLOW + "%s";
 	public static final String MSG_NOTES_TOOK = TAG_NOTES + ChatColor.WHITE + "Took " + ChatColor.YELLOW + "%s Notes" + ChatColor.WHITE + " from " + ChatColor.YELLOW + "%s";
 	public static final String MSG_NOTES_NOT_ENOUGH = TAG_NOTES + ChatColor.WHITE + "Nope. " + ChatColor.YELLOW + "%s" + ChatColor.WHITE + " only has " + ChatColor.YELLOW + "%s Notes";
