@@ -1,5 +1,6 @@
 package com.ulticraft.hc.uapi;
 
+import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -163,5 +164,19 @@ public class Area
 	public void setRadius(Double radius)
 	{
 		this.radius = radius;
+	}
+	
+	/**
+	 * Pick a random location in this radius
+	 * @return 
+	 * 
+	 */
+	public Location random()
+	{
+		Random r = new Random();
+		double x = ((r.nextDouble() - 0.5) * 2) * radius;
+		double y = ((r.nextDouble() - 0.5) * 2) * radius;
+		double z = ((r.nextDouble() - 0.5) * 2) * radius;
+		return location.clone().add(x, y, z);
 	}
 }
