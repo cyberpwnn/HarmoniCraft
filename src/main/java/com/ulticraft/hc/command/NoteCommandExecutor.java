@@ -44,6 +44,65 @@ public class NoteCommandExecutor implements CommandExecutor
 				return true;
 			}
 			
+			if(args[0].equalsIgnoreCase("pay"))
+			{
+				if(!isPlayer)
+				{
+					sender.sendMessage("You dont have a balance.");
+					return true;
+				}
+				
+				if(args.length == 3)
+				{
+					if(pl.canFindPlayer(args[1]))
+					{
+						try
+						{
+							int gems = Integer.parseInt(args[2]);
+							
+							if(gems < 0)
+							{
+								pl.msg(sender, String.format(Info.MSG_NOT_POSITIVE, String.valueOf(gems)));
+							}
+							
+							else if(gems < 1)
+							{
+								pl.msg(sender, String.format(Info.MSG_NOT_ZERO, String.valueOf(gems)));
+							}
+							
+							else
+							{
+								if(!pl.getNoteComponent().has((Player) sender, gems))
+								{
+									sender.sendMessage(Info.TAG_NOTES + "You dont have that many notes.");
+									return true;
+								}
+								
+								pl.getNoteComponent().take((Player) sender, gems);
+								pl.getNoteComponent().give(pl.findPlayer(args[1]), gems);
+								pl.msg(sender, String.format(Info.MSG_NOTES_PAID, String.valueOf(gems), pl.findPlayer(args[1]).getName()));
+								pl.msg(pl.findPlayer(args[1]), String.format(Info.MSG_NOTES_PAID_FROM, pl.findPlayer(args[1]).getName(), String.valueOf(gems)));
+							}
+						}
+						
+						catch(NumberFormatException e)
+						{
+							pl.msg(sender, String.format(Info.MSG_NOT_NUMBER, args[2]));
+						}
+					}
+					
+					else
+					{
+						pl.msg(sender, String.format(Info.MSG_CANT_FIND_PLAYER, args[1]));
+					}
+				}
+				
+				else
+				{
+					pl.msg(sender, Info.TAG_NOTES + "/note pay <player> <ammount>");
+				}
+			}
+			
 			if(args[0].equalsIgnoreCase("owned"))
 			{
 				pl.getUiComponent().openOwned(player);
