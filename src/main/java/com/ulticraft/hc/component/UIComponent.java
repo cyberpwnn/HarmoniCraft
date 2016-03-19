@@ -61,7 +61,7 @@ public class UIComponent extends Component
 			{
 				continue;
 			}
-			
+						
 			Element element = pane.new Element(ChatColor.YELLOW + i.getName(), getMaterial(i), j);
 			element.resetDescription();
 			element.addInfo(ChatColor.GOLD + "Costs " + i.getCost() + " Notes");
@@ -77,15 +77,46 @@ public class UIComponent extends Component
 				element.addFailedRequirement("Not Enough Notes!");
 			}
 			
+			for(String k : i.getDependencies())
+			{
+				if(pl.getPackageComponent().get(k) != null)
+				{
+					if(pl.getPackageComponent().has(p, k))
+					{
+						element.addRequirement("Requires " + k);
+					}
+					
+					else
+					{
+						element.addFailedRequirement("Requires " + k);
+					}
+				}
+			}
+			
 			element.setQuickRunnable(new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					if(pl.getNoteComponent().has(p, i.getCost()))
+					if(pl.gpd(p).getNotes() >= i.getCost())
 					{
+						for(String k : i.getDependencies())
+						{
+							if(pl.getPackageComponent().get(k) != null)
+							{
+								if(!pl.getPackageComponent().has(p, k))
+								{
+									return;
+								}
+							}
+							
+							else
+							{
+								pl.f("INVALID PACKAGE REQUIREMENT: " + i.getName() + " requires ??? (" + k + ") ???");
+							}
+						}
+						
 						gui.close();
-						pane.breakElements();
 						pl.getPackageComponent().aquire(p, i);
 					}
 				}
