@@ -241,6 +241,11 @@ public class DataComponent extends Component implements Listener
 		return cache.get(player);
 	}
 	
+	public void put(Player p, PlayerData pd)
+	{
+		cache.put(p, pd);
+	}
+	
 	public void join(Player player)
 	{
 		if(!exists(player))
