@@ -2,19 +2,29 @@ package com.ulticraft.hc.component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.meta.FireworkMeta;
 import com.ulticraft.hc.HarmoniCraft;
+import com.ulticraft.hc.Info;
 import com.ulticraft.hc.composite.PlayerData;
+import com.ulticraft.hc.uapi.Area;
 import com.ulticraft.hc.uapi.Component;
 import com.ulticraft.hc.uapi.DataManager;
 import com.ulticraft.hc.uapi.Title;
@@ -27,6 +37,8 @@ public class DataComponent extends Component implements Listener
 	private UMap<Player, PlayerData> cache;
 	private Integer[] task;
 	private String i;
+	private int tsk;
+	private int tks;
 	
 	public DataComponent(HarmoniCraft pl)
 	{
@@ -87,6 +99,15 @@ public class DataComponent extends Component implements Listener
 				@Override
 				public void run()
 				{
+					if(Math.random() < 0.01)
+					{
+						for(Player i : pl.onlinePlayers())
+						{
+							Area a = new Area(i.getLocation().add(0, 20, 0), 48.0);
+							fireworks(a.random());
+						}
+					}
+					
 					for(int ixx = 0; ixx < 4; ixx++)
 					{
 						if(task[1] >= mk.length)
@@ -107,9 +128,47 @@ public class DataComponent extends Component implements Listener
 										t.setStayTime(80);
 										t.setTitle(ChatColor.AQUA + "HarmoniCraft Notes");
 										t.setSubtitle(ChatColor.YELLOW + "Developed by cyberpwn");
-										i.getWorld().playSound(i.getLocation(), Sound.WITHER_SPAWN, 1f, 1f);
+										i.getWorld().playSound(i.getLocation(), Sound.AMBIENCE_CAVE, 1f, 1.8f);
 										
 										t.send(i);
+										
+										tks = 0;
+										
+										tsk = pl.scheduleSyncRepeatingTask(1, 1, new Runnable()
+										{
+											@Override
+											public void run()
+											{
+												tks++;
+												
+												if(Math.random() < 0.5)
+												{
+													for(Player i : pl.onlinePlayers())
+													{
+														Area a = new Area(i.getLocation().add(0, 20, 0), 48.0);
+														fireworks(a.random());
+													}
+												}
+												
+												if(tks > 150)
+												{
+													for(Player i : pl.onlinePlayers())
+													{
+														Area a = new Area(i.getLocation().add(0, 20, 0), 30.0);
+														
+														for(int ix = 0; ix < 4; ix++)
+														{
+															fireworks(a.random());
+														}
+													}
+												}
+												
+												if(tks > 200)
+												{
+													pl.cancelTask(tsk);
+												}
+											}
+										});
 									}
 								});
 							}
@@ -129,6 +188,20 @@ public class DataComponent extends Component implements Listener
 						pd.setPackages("");
 						pd.setUuid(uuid.toString());
 						
+						for(Player c : pl.onlinePlayers())
+						{
+							if(c.getUniqueId().toString().equals(pd.getUuid()))
+							{
+								pd.setName(c.getName());
+								pl.spd(c, pd);
+								c.sendMessage(Info.TAG_HARMONICRAFT + "----------------------------------------");
+								c.sendMessage(Info.TAG_HARMONICRAFT + "       Your Playerdata has been imported. ");
+								c.sendMessage(Info.TAG_HARMONICRAFT + "      If your notes do not show up, tell me!");
+								c.sendMessage(Info.TAG_HARMONICRAFT + "                                       - cyberpwn");
+								c.sendMessage(Info.TAG_HARMONICRAFT + "----------------------------------------");
+							}
+						}
+						
 						DataManager dm = new DataManager(pl, toFileName(uuid));
 						dm.writeYAML(pd);
 						
@@ -140,7 +213,7 @@ public class DataComponent extends Component implements Listener
 						t.setSubtitle(ChatColor.DARK_GRAY + "Progress: " + ChatColor.AQUA + percent + "%");
 						t.setSubSubTitle(ChatColor.AQUA + "Setting up Source...");
 						
-						if(percent > 30)
+						if(percent > 9)
 						{
 							t.setSubSubTitle(ChatColor.AQUA + "Patching Player: " + task[1] + " :: + " + uuid);
 						}
@@ -182,6 +255,7 @@ public class DataComponent extends Component implements Listener
 		
 		if(pd != null)
 		{
+			pd.setName(player.getName());
 			cache.put(player, pd);
 			pl.o("Loaded Player " + player.getUniqueId().toString());
 		}
@@ -311,6 +385,128 @@ public class DataComponent extends Component implements Listener
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void fireworks(Location location)
+	{
+		Firework fw = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
+		FireworkMeta fwm = fw.getFireworkMeta();
+		
+		Random r = new Random();
+		
+		int rt = r.nextInt(4) + 1;
+		Type type = Type.BALL;
+		if(rt == 1)
+			type = Type.BALL;
+		if(rt == 2)
+			type = Type.BALL_LARGE;
+		if(rt == 3)
+			type = Type.BURST;
+		if(rt == 4)
+			type = Type.CREEPER;
+		if(rt == 5)
+			type = Type.STAR;
+		
+		int r1i = r.nextInt(17) + 1;
+		int r2i = r.nextInt(17) + 1;
+		Color c1 = getColor(r1i);
+		Color c2 = getColor(r2i);
+		FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(type).trail(r.nextBoolean()).build();
+		fwm.addEffect(effect);
+		int rp = r.nextInt(2) + 1;
+		fwm.setPower(rp);
+		fw.setFireworkMeta(fwm);
+	}
+	
+	private Color getColor(int i)
+	{
+		Color c = null;
+		if(i == 1)
+		{
+			c = Color.AQUA;
+		}
+		
+		if(i == 2)
+		{
+			c = Color.BLACK;
+		}
+		
+		if(i == 3)
+		{
+			c = Color.BLUE;
+		}
+		
+		if(i == 4)
+		{
+			c = Color.FUCHSIA;
+		}
+		
+		if(i == 5)
+		{
+			c = Color.GRAY;
+		}
+		
+		if(i == 6)
+		{
+			c = Color.GREEN;
+		}
+		
+		if(i == 7)
+		{
+			c = Color.LIME;
+		}
+		
+		if(i == 8)
+		{
+			c = Color.MAROON;
+		}
+		
+		if(i == 9)
+		{
+			c = Color.NAVY;
+		}
+		
+		if(i == 10)
+		{
+			c = Color.OLIVE;
+		}
+		
+		if(i == 11)
+		{
+			c = Color.ORANGE;
+		}
+		
+		if(i == 12)
+		{
+			c = Color.PURPLE;
+		}
+		
+		if(i == 13)
+		{
+			c = Color.RED;
+		}
+		
+		if(i == 14)
+		{
+			c = Color.SILVER;
+		}
+		
+		if(i == 15)
+		{
+			c = Color.TEAL;
+		}
+		
+		if(i == 16)
+		{
+			c = Color.WHITE;
+		}
+		
+		if(i == 17)
+		{
+			c = Color.YELLOW;
+		}
+		
+		return c;
 	}
 	
 	@EventHandler
