@@ -1,5 +1,6 @@
 package com.ulticraft.hc.composite;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.ulticraft.hc.uapi.UList;
@@ -21,6 +22,7 @@ public class PackageData
 		this.dependencies = new UList<String>();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public PackageData(FileConfiguration fc)
 	{
 		this.name = fc.getString("package.name");
@@ -30,6 +32,26 @@ public class PackageData
 		this.dependencies = new UList<String>(fc.getStringList("package.requires"));
 		this.material = fc.getString("package.material");
 		this.description = fc.getString("package.description");
+		
+		try
+		{
+			Material.valueOf(material);
+		}
+		
+		catch(Exception e)
+		{
+			try
+			{
+				Integer i = Integer.parseInt(material);
+				material = Material.getMaterial(i).toString();
+				System.out.println("Selected Material from ID: " + material);
+			}
+			
+			catch(Exception e2)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public String getName()
