@@ -1,12 +1,14 @@
 package com.ulticraft.hc.command;
 
 import java.io.File;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.ulticraft.hc.HarmoniCraft;
 import com.ulticraft.hc.Info;
+import net.md_5.bungee.api.ChatColor;
 
 public class NoteCommandExecutor implements CommandExecutor
 {
@@ -44,7 +46,7 @@ public class NoteCommandExecutor implements CommandExecutor
 				return true;
 			}
 			
-			if(args[0].equalsIgnoreCase("pay"))
+			else if(args[0].equalsIgnoreCase("pay"))
 			{
 				if(!isPlayer)
 				{
@@ -81,7 +83,7 @@ public class NoteCommandExecutor implements CommandExecutor
 								pl.getNoteComponent().take((Player) sender, gems);
 								pl.getNoteComponent().give(pl.findPlayer(args[1]), gems);
 								pl.msg(sender, String.format(Info.MSG_NOTES_PAID, String.valueOf(gems), pl.findPlayer(args[1]).getName()));
-								pl.msg(pl.findPlayer(args[1]), String.format(Info.MSG_NOTES_PAID_FROM, pl.findPlayer(args[1]).getName(), String.valueOf(gems)));
+								pl.msg(pl.findPlayer(args[1]), String.format(Info.MSG_NOTES_PAID_FROM, ((Player) sender).getName(), String.valueOf(gems)));
 							}
 						}
 						
@@ -103,7 +105,7 @@ public class NoteCommandExecutor implements CommandExecutor
 				}
 			}
 			
-			if(args[0].equalsIgnoreCase("owned"))
+			else if(args[0].equalsIgnoreCase("owned"))
 			{
 				pl.getUiComponent().openOwned(player);
 				return true;
@@ -115,7 +117,7 @@ public class NoteCommandExecutor implements CommandExecutor
 				return true;
 			}
 			
-			if(sender.hasPermission(Info.PERM_GOD))
+			else if(sender.hasPermission(Info.PERM_GOD))
 			{
 				if(args[0].equalsIgnoreCase("import"))
 				{
@@ -127,17 +129,14 @@ public class NoteCommandExecutor implements CommandExecutor
 					pl.getDataComponent().importLegacy(new File(pl.getDataFolder(), "legacy.yml"));
 				}
 				
-				if(args[0].equalsIgnoreCase("reload"))
+				else if(args[0].equalsIgnoreCase("reload"))
 				{
-					if(isPlayer)
-					{
-						return true;
-					}
-					
-					pl.getDataComponent().importLegacy(new File(pl.getDataFolder(), "legacy.yml"));
+					sender.sendMessage(ChatColor.GREEN + "HarmoniCraft (Plugin Reloaded)");
+					Bukkit.getServer().getPluginManager().disablePlugin(Bukkit.getServer().getPluginManager().getPlugin("HarmoniCraft"));
+					Bukkit.getServer().getPluginManager().enablePlugin(Bukkit.getServer().getPluginManager().getPlugin("HarmoniCraft"));
 				}
 				
-				if(args[0].equalsIgnoreCase("get"))
+				else if(args[0].equalsIgnoreCase("get"))
 				{
 					if(args.length == 2)
 					{
