@@ -122,6 +122,45 @@ public class DataComponent extends Component implements Listener
 						{
 							pl.cancelTask(task[0]);
 							importing = false;
+							
+							tks = 0;
+							
+							tsk = pl.scheduleSyncRepeatingTask(1, 1, new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									tks++;
+									
+									if(Math.random() < 0.5)
+									{
+										for(Player i : pl.onlinePlayers())
+										{
+											Area a = new Area(i.getLocation().add(0, 20, 0), 48.0);
+											fireworks(a.random());
+										}
+									}
+									
+									if(tks > 120)
+									{
+										for(Player i : pl.onlinePlayers())
+										{
+											Area a = new Area(i.getLocation().add(0, 20, 0), 30.0);
+											
+											for(int ix = 0; ix < 1; ix++)
+											{
+												fireworks(a.random());
+											}
+										}
+									}
+									
+									if(tks > 200)
+									{
+										pl.cancelTask(tsk);
+									}
+								}
+							});
+							
 							for(final Player i : pl.onlinePlayers())
 							{
 								pl.scheduleSyncTask(80, new Runnable()
@@ -139,44 +178,6 @@ public class DataComponent extends Component implements Listener
 										i.getWorld().playSound(i.getLocation(), Sound.AMBIENCE_CAVE, 1f, 1.8f);
 										
 										t.send(i);
-										
-										tks = 0;
-										
-										tsk = pl.scheduleSyncRepeatingTask(1, 1, new Runnable()
-										{
-											@Override
-											public void run()
-											{
-												tks++;
-												
-												if(Math.random() < 0.5)
-												{
-													for(Player i : pl.onlinePlayers())
-													{
-														Area a = new Area(i.getLocation().add(0, 20, 0), 48.0);
-														fireworks(a.random());
-													}
-												}
-												
-												if(tks > 120)
-												{
-													for(Player i : pl.onlinePlayers())
-													{
-														Area a = new Area(i.getLocation().add(0, 20, 0), 30.0);
-														
-														for(int ix = 0; ix < 1; ix++)
-														{
-															fireworks(a.random());
-														}
-													}
-												}
-												
-												if(tks > 200)
-												{
-													pl.cancelTask(tsk);
-												}
-											}
-										});
 									}
 								});
 							}
