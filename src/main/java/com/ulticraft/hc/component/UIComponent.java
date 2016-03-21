@@ -1,6 +1,7 @@
 package com.ulticraft.hc.component;
 
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import com.ulticraft.hc.HarmoniCraft;
@@ -65,8 +66,12 @@ public class UIComponent extends Component
 			Element element = pane.new Element(ChatColor.YELLOW + i.getName(), getMaterial(i), j);
 			element.resetDescription();
 			element.addInfo(ChatColor.GOLD + "Costs " + i.getCost() + " Notes");
-			element.addInfo(WordUtils.wrap(i.getDescription(), 32));
 			
+			for(String k : StringUtils.split(WordUtils.wrap(i.getDescription(), 48), '\n'))
+			{
+				element.addInfo(k.trim());
+			}
+						
 			if(pl.getNoteComponent().has(p, i.getCost()))
 			{
 				element.addRequirement("Affordable!");
