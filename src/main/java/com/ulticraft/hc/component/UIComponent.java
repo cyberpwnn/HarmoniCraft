@@ -33,7 +33,7 @@ public class UIComponent extends Component
 	
 	public Material getMaterial(PackageData pd)
 	{
-		if(Material.valueOf(pd.getMaterial()) != null)
+		if (Material.valueOf(pd.getMaterial()) != null)
 		{
 			return Material.valueOf(pd.getMaterial());
 		}
@@ -56,23 +56,33 @@ public class UIComponent extends Component
 		
 		int j = 0;
 		
-		for(final PackageData i : pl.getPackageComponent().get())
+		for (final PackageData i : pl.getPackageComponent().get())
 		{
-			if(pl.getPackageComponent().has(p, i))
+			if (pl.getPackageComponent().has(p, i))
 			{
 				continue;
 			}
-						
+			
 			Element element = pane.new Element(ChatColor.YELLOW + i.getName(), getMaterial(i), j);
 			element.resetDescription();
 			element.addInfo(ChatColor.GOLD + "Costs " + i.getCost() + " Notes");
 			
-			for(String k : StringUtils.split(WordUtils.wrap(i.getDescription(), 48), '\n'))
+			for (String k : StringUtils.split(WordUtils.wrap(i.getDescription(), 48), '\n'))
 			{
 				element.addInfo(k.trim());
 			}
-						
-			if(pl.getNoteComponent().has(p, i.getCost()))
+			
+			if (i.getReoccurring() != null && i.getReoccurring() == true)
+			{
+				element.addRequirement("Reoccurring!");
+			}
+			
+			else
+			{
+				element.addRequirement("One Time Only!");
+			}
+			
+			if (pl.getNoteComponent().has(p, i.getCost()))
 			{
 				element.addRequirement("Affordable!");
 			}
@@ -82,11 +92,11 @@ public class UIComponent extends Component
 				element.addFailedRequirement("Not Enough Notes!");
 			}
 			
-			for(String k : i.getDependencies())
+			for (String k : i.getDependencies())
 			{
-				if(pl.getPackageComponent().get(k) != null)
+				if (pl.getPackageComponent().get(k) != null)
 				{
-					if(pl.getPackageComponent().has(p, k))
+					if (pl.getPackageComponent().has(p, k))
 					{
 						element.addRequirement("Requires " + k);
 					}
@@ -103,13 +113,13 @@ public class UIComponent extends Component
 				@Override
 				public void run()
 				{
-					if(pl.gpd(p).getNotes() >= i.getCost())
+					if (pl.gpd(p).getNotes() >= i.getCost())
 					{
-						for(String k : i.getDependencies())
+						for (String k : i.getDependencies())
 						{
-							if(pl.getPackageComponent().get(k) != null)
+							if (pl.getPackageComponent().get(k) != null)
 							{
-								if(!pl.getPackageComponent().has(p, k))
+								if (!pl.getPackageComponent().has(p, k))
 								{
 									return;
 								}
@@ -126,7 +136,7 @@ public class UIComponent extends Component
 					}
 				}
 			});
-			
+							
 			j++;
 		}
 		
@@ -141,9 +151,9 @@ public class UIComponent extends Component
 		
 		int j = 0;
 		
-		for(final PackageData i : pl.getPackageComponent().get())
+		for (final PackageData i : pl.getPackageComponent().get())
 		{
-			if(!pl.getPackageComponent().has(p, i))
+			if (!pl.getPackageComponent().has(p, i))
 			{
 				continue;
 			}
