@@ -187,6 +187,11 @@ public class PackageComponent extends Component
 	
 	public boolean has(Player p, PackageData pd)
 	{
+		if(pd.getReoccurring() != null && pd.getReoccurring() == true)
+		{
+			return false;
+		}
+		
 		return get(p).contains(pd);
 	}
 	
@@ -213,9 +218,12 @@ public class PackageComponent extends Component
 			}
 		}
 		
-		PlayerData pld = pl.gpd(p);
-		pld.setPackages(new UList<String>(pl.gpd(p).getPackages()).qadd(getCodeName(pd)).toString(","));
-		pl.spd(p, pld);
+		if(!(pd.getReoccurring() != null && pd.getReoccurring() == true))
+		{
+			PlayerData pld = pl.gpd(p);
+			pld.setPackages(new UList<String>(pl.gpd(p).getPackages()).qadd(getCodeName(pd)).toString(","));
+			pl.spd(p, pld);
+		}
 		
 		pl.getNoteComponent().take(p, pd.getCost());
 		p.sendMessage(Info.TAG_NOTES + "Unlocked " + pd.getName());
