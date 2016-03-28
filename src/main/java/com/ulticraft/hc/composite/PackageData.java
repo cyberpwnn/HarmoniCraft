@@ -14,6 +14,7 @@ public class PackageData
 	private UList<String> initial;
 	private UList<String> dependencies;
 	private String description;
+	private Boolean reoccurring;
 	
 	public PackageData()
 	{
@@ -32,6 +33,7 @@ public class PackageData
 		this.dependencies = new UList<String>(fc.getStringList("package.requires"));
 		this.material = fc.getString("package.material");
 		this.description = fc.getString("package.description");
+		this.reoccurring = fc.getBoolean("package.reoccurring");
 		
 		try
 		{
@@ -165,5 +167,15 @@ public class PackageData
 	public String toString()
 	{
 		return name + " > " + cost + "n";
+	}
+
+	public Boolean getReoccurring()
+	{
+		return reoccurring;
+	}
+
+	public void setReoccurring(Boolean reoccurring)
+	{
+		this.reoccurring = reoccurring;
 	}
 }
