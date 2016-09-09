@@ -74,22 +74,22 @@ public class UIComponent extends Component
 			
 			if (i.getReoccurring() != null && i.getReoccurring() == true)
 			{
-				element.addRequirement("Can be purchased multiple times");
+				element.addRequirement("This item can be purchased multiple times");
 			}
 			
 			else
 			{
-				element.addRequirement("One time purchase!");
+				element.addRequirement("This item is a one-time purchase");
 			}
 			
 			if (pl.getNoteComponent().has(p, i.getCost()))
 			{
-				element.addRequirement("Affordable!");
+				element.addRequirement("You can afford this item!");
 			}
 			
 			else
 			{
-				element.addFailedRequirement("Not Enough Notes!");
+				element.addFailedRequirement("You can't afford this item!");
 			}
 			
 			for (String k : i.getDependencies())
